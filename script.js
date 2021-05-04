@@ -35,7 +35,7 @@ request.addEventListener('load',function () {
 getCountryData('thailand');
 getCountryData('germany'); */
 ///////////////call back hell////////////////////////
-/* const renderCountry = function(data, className = '') {
+ const renderCountry = function(data, className = '') {
   const html = `<article class="country ${className}">
       <img class="country__img" src="${data.flag}" />
       <div class="country__data">
@@ -53,7 +53,7 @@ getCountryData('germany'); */
 };
 
 
-const getCountryAndNeighbour = function (country) {
+/* const getCountryAndNeighbour = function (country) {
  ///AJAX call country 1
   const request = new XMLHttpRequest();
   request.open('GET', `https://restcountries.eu/rest/v2/name/${country}`);
@@ -88,9 +88,17 @@ const getCountryAndNeighbour = function (country) {
 
       });
     });
-  };
+  }; */
 
-  getCountryAndNeighbour('netherland'); */
  /////fetch API
- const request = fetch('https://restcountries.eu/rest/v2/name/thailand');
- console.log(request);
+ const getCountryData = (country) => {
+  fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+  .then(res => res.json())
+  .then(data => renderCountry(data[0]));
+ };
+
+ getCountryData('thailand');
+ getCountryData('russia');
+ getCountryData('usa');
+  
+
