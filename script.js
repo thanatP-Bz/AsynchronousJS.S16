@@ -44,7 +44,7 @@ const renderCountry = function(data, className = '') {
       `;
   
       countriesContainer.insertAdjacentHTML('beforeend', html);
-      countriesContainer.style.opacity = 1;
+      /* countriesContainer.style.opacity = 1; */
 };
 /* const getCountryAndNeighbour = function (country) {
  ///AJAX call country 1
@@ -79,29 +79,64 @@ const renderCountry = function(data, className = '') {
  /////fetch API
  const renderError = (msg) => {
    countriesContainer.insertAdjacentText('beforeend', msg);
-   countriesContainer.style.opacity = 1;
+  /*  countriesContainer.style.opacity = 1; */
  }
- const getCountryDataFetch = (country) => {fetch(`https://restcountries.eu/rest/v2/name/${country}`)
-       .then(res => res.json())
+
+ const getJSON = (url, errorMsg = 'Something went wrong') => {
+   return fetch(url).then(res => {
+    if(!res.ok)
+    throw new Error(`${errorMsg}(${res.status})`)
+  
+    return res.json();
+   })
+ };
+
+ const getCountryDataFetch = (country) => {
+       getJSON(`https://restcountries.eu/rest/v2/name/${country}`, 'Country not found')
+
        .then(data => {renderCountry(data[0])
 
         const neighbour = data[0].borders[0];
 
-        if(!neighbour) return;
+        if(!neighbour) throw new Error('No neighbour found');
         ///fetch nested inside must be returned
-        return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbour}`)
+        return getJSON(`https://restcountries.eu/rest/v2/alpha/${neighbour}`,'Country not found')
       })
-      .then(res => res.json())
+      
       .then(data => renderCountry(data, 'neighbour'))
       .catch(err => {
         (`${err}`)
-        renderError(`Something went wrong`)
-      });
+        renderError(`Something went wrong ${err.message}`);
+      })
+      .finally(() => {
+        countriesContainer.style.opacity = 1;
+      })
       
 };
 
-
-
 btn.addEventListener('click', () => {
-  getCountryDataFetch('usa');
+  getCountryDataFetch('australia');
 });
+
+
+
+
+/* const requestIP = () => {
+  fetch(`demo.json`)
+   .then(res => res.json())
+   .then(data => {console.log(data)})
+   .catch(err => {console.log(`${err}somthing went wrong`)})
+  }
+
+   requestIP();  */
+  ////coding chellege
+
+
+
+  const getGeolocation = (lat, lng) => {fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(`${err}`))
+        }
+
+  getGeolocation();
