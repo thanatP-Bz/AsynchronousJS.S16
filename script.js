@@ -133,10 +133,38 @@ btn.addEventListener('click', () => {
 
 
 
-  const getGeolocation = (lat, lng) => {fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+  const whereAmI = (lat, lng) => {fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
         .then(res => res.json())
-        .then(data => console.log(data))
-        .catch(err => console.error(`${err}`))
+        .then(data => {console.log(data)
+         console.log(`You are in ${data.city} ${data.region} ${data.country}`)
+         });
         }
 
-  getGeolocation();
+  whereAmI(13.7563, 100.5018);
+
+
+  
+    const whereAmI2 = (lat, lng) => {
+    fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+        .then(res => {
+            if(!res.ok) throw new Error (`Problem with geocoding ${res.status}`)
+            res.json()
+        })
+        .then(data => {
+            console.log(data);
+            console.log(`You are in ${data.country}`)
+
+            return fetch()`https://restcountries.eu/rest/v2/name/${data.country}`
+        })
+        .then(res => {
+          if (!res.ok) 
+          throw new Error (`Country not found ${res.status}`)
+
+          return res.json()
+          .then(data => renderCountry(data[0]))
+        })
+        .catch(err => {console.error(`${err.message}`)
+         })
+        }
+
+  whereAmI2(52.508, 13.381);
