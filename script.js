@@ -79,7 +79,7 @@ const renderCountry = function(data, className = '') {
  /////fetch API
  const renderError = (msg) => {
    countriesContainer.insertAdjacentText('beforeend', msg);
-  /*  countriesContainer.style.opacity = 1; */
+  countriesContainer.style.opacity = 1; 
  }
 
  const getJSON = (url, errorMsg = 'Something went wrong') => {
@@ -133,28 +133,28 @@ btn.addEventListener('click', () => {
 
 
 
-  const whereAmI = (lat, lng) => {fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+  /* const whereAmI = (lat, lng) => {fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
         .then(res => res.json())
         .then(data => {console.log(data)
          console.log(`You are in ${data.city} ${data.region} ${data.country}`)
          });
         }
 
-  whereAmI(13.7563, 100.5018);
+  whereAmI(13.7563, 100.5018);  */
 
 
   
-    const whereAmI2 = (lat, lng) => {
+   /*  const whereAmI2 = (lat, lng) => {
     fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
         .then(res => {
             if(!res.ok) throw new Error (`Problem with geocoding ${res.status}`)
-            res.json()
+            return res.json()
         })
         .then(data => {
             console.log(data);
             console.log(`You are in ${data.country}`)
 
-            return fetch()`https://restcountries.eu/rest/v2/name/${data.country}`
+            return fetch(`https://restcountries.eu/rest/v2/name/${data.country}`)
         })
         .then(res => {
           if (!res.ok) 
@@ -167,4 +167,47 @@ btn.addEventListener('click', () => {
          })
         }
 
-  whereAmI2(52.508, 13.381);
+        whereAmI2(52.508, 13.381);  */
+
+        /* console.log('test start');
+        setTimeout(() => console.log('3 second'), 3);
+        Promise.resolve('Resolve promise 1')
+        .then(res => console.log(res));
+        console.log('Test end');
+ */
+
+    /*  const lottary = new Promise((resolve, reject) => {
+      console.log('Lottary draw is happening');
+
+      setTimeout(() => {
+        if(Math.random() >= 0.5) {
+          resolve('YOU WIN')
+        } else {
+          reject(new Error('YOU LOSE'))
+        }
+      }, 2000);
+     });
+
+     lottary.then(res => console.log(res)).catch(err => console.error(err)); */
+
+    
+
+     const wait = (seconds) => {
+       return new Promise((resolve) => {
+         setTimeout(resolve, seconds * 1000) 
+       })
+     };
+
+  wait(3).then(() => {console.log(`I waited for 1 seconds`);
+  return wait(1)
+  })
+  .then(() => {console.log(`I waited for 2 seconds`);
+  return wait(1)
+  })
+  .then(() => {console.log(`I waited for 3 seconds`);
+  return wait(1)
+  })
+  .then(() => console.log(`I waited for 4 second`));
+ 
+Promise.resolve('abc').then(x => console.log(x));
+Promise.reject(new Error('Problem!')).catch(x => console.error(x));
