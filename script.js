@@ -274,7 +274,7 @@ const AsyncCountry = async (country) => {
     //Reverse Geocoding
     const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
     const dataGeo = await resGeo.json();
-    console.log(dataGeo);
+
     if (!resGeo.ok) throw new Error(`Problem getting location data`);
     //
     const res = await fetch(`https://restcountries.eu/rest/v2/name/${country}`);
@@ -283,6 +283,8 @@ const AsyncCountry = async (country) => {
     console.log(res);
     const data = await res.json();
     renderCountry(data[0]);
+
+    return `You are in ${dataGeo.city}, ${dataGeo.country}`;
   } catch (err) {
     console.error(`${err}`);
     renderError(`Something went wrong${err}`);
@@ -290,3 +292,4 @@ const AsyncCountry = async (country) => {
 };
 
 AsyncCountry("thailand");
+AsyncCountry().then((city) => console.log(city));
